@@ -1,0 +1,15 @@
+{
+    "folders":
+    [
+    {
+        "path": ".",
+        "folder_exclude_patterns": [
+            ".idea",
+            "bower_components",
+            "node_modules",
+            "dist",
+            "resources"
+        ]
+    }
+    ]
+}

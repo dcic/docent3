@@ -1,0 +1,60 @@
+@import 'base';
+
+.clustergram {
+  background-color: $color-white;
+  border-bottom: 1px solid $color-gray;
+  overflow: hidden;
+  padding: 40px 0;
+  margin-bottom: 20px;
+
+  @media all and (max-width: 580px) {
+    display: none;
+  }
+}
+
+#button-container {
+  margin-left: 140px;
+  text-align: left;
+  width: 180px;
+  // margin: 0 auto;
+
+  .inactive {
+    opacity: .5;
+
+    &:hover {
+      background-color: $color-blue-light;
+    }
+  }
+
+  .active {
+    opacity: 1;
+  }
+}
+
+.clust-btn {
+  outline: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 6px 12px;
+  touch-action: manipulation;
+  cursor: pointer;
+  user-select: none;
+  color: $color-white;
+  background-color: $color-blue;
+  border-color: $color-blue-dark;
+}
+
+#svg-div {
+  height: 400px;
+  width: 100%;
+
+  text[text-anchor="center"] {
+    fill: $color-blue;
+  }
+
+  @media all and (max-width: 768px) {
+    margin: 0 auto;
+    width: 550px;
+    height: 1000px;
+  }
+}

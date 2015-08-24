@@ -1,0 +1,41 @@
+{
+  "name": "docentv3",
+  "version": "1.0.0",
+  "description": "Version 3 of the Docent App for Viewing LINCS Milestones Data",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dcic/docent3.git"
+  },
+  "keywords": [
+    "LINCS",
+    "DCIC",
+    "Docent"
+  ],
+  "author": "Michael McDermott",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dcic/docent3/issues"
+  },
+  "homepage": "https://github.com/dcic/docent3#readme",
+  "devDependencies": {
+    "browser-sync": "^2.8.2",
+    "del": "^1.2.1",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^2.3.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-filter": "^3.0.1",
+    "gulp-load-plugins": "^0.10.0",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-ng-annotate": "^1.1.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-sass": "^2.0.4",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-uglify": "^1.2.0",
+    "minimist": "^1.2.0",
+    "run-sequence": "^1.1.2"
+  }
+}

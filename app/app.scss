@@ -1,0 +1,59 @@
+@import 'normalize';
+@import 'base';
+@import 'clustergram';
+
+html,
+body {
+  font-family: $font-family;
+  -webkit-font-smoothing: antialiased;
+  height: 100%;
+  width: 100%;
+}
+
+.navbar-wrapper {
+  background-color: $color-gray-light;
+  border-bottom: 1px solid $color-gray;
+  display: flex;
+  height: 50px;
+}
+
+.navbar-inner {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 100px;
+
+  a {
+    color: $color-blue;
+    font-size: 24px;
+    font-weight: 400;
+    text-decoration: none;
+  }
+}
+
+.wrapper {
+  margin: 0 100px;
+}
+
+.releases {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+}
+
+.dc-release {
+
+  h4 {
+    color: $color-blue;
+  }
+}
+
+.dc-rel-info {
+
+  p {
+    margin: 0;
+  }
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="docent3">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Docent v3</title>
+  <link rel="stylesheet" href="style/bundle.min.css">
+  <script src="jquery.min.js"></script>
+  <script src="angular.js"></script>
+  <script src="ng-lodash.min.js"></script>
+  <script src="jquery-ui.min.js"></script>
+  <script src="bundle.min.js"></script>
+</head>
+
+<body>
+  <!-- Eventually put into directive -->
+  <div class="navbar-wrapper">
+    <div class="navbar-inner">
+      <a href="">Docent
+        <span class="v3">v3</span>
+      </a>
+      <ul class="nav-right">
+        <!-- <li></li> -->
+      </ul>
+    </div>
+  </div>
+  <div class="wrapper" ng-controller="Docent3Controller as dc">
+    <div class="clustergram">
+      <clustergram arguments="dc.arguments"></clustergram>
+    </div>
+    <div class="releases">
+      <p ng-if="dc.releases.length === 0">
+        Click on a tile above to view the releases...
+      </p>
+      <div ng-repeat="release in dc.releases" class="dc-release">
+        <h4>{{release.datasetName}}</h4>
+        <div class="dc-rel-info">
+          <p><strong>Center:</strong> {{release.group.name}}</p>
+          <p><strong>Assay:</strong> {{release.metadata.assay[0].name}}</p>
+          <p><strong>Description:</strong> {{release.description}}</p>
+        </div>
+        <div class="dc-rel-status" ng-if="release.released">
+          Release
+        </div>
+        <div class="dc-rel-status" ng-if="!release.released">
+          Awaiting Release
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

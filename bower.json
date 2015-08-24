@@ -1,0 +1,31 @@
+{
+  "name": "docentv3",
+  "version": "1.0.0",
+  "homepage": "https://github.com/dcic/docent3",
+  "authors": [
+    "Michael McDermott <michael@mgmcdermott.com>"
+  ],
+  "description": "Version 3 of the Docent App for Viewing LINCS Milestones Data",
+  "main": "app.js",
+  "keywords": [
+    "LINCS",
+    "Data",
+    "Milestones",
+    "DCIC",
+    "Docent"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.4",
+    "jquery": "~2.1.4",
+    "jquery-ui": "~1.11.4",
+    "ng-lodash": "~0.2.3"
+  }
+}
