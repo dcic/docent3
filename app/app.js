@@ -1,3 +1,5 @@
+/*eslint camelcase: 0*/
+
 (function() {
   'use strict';
 
@@ -18,25 +20,27 @@
       perturbagenIds: []
     };
     vm.arguments = {
-      networkData: d3Data,
-      svgDivId: 'svg-div',
-      rowLabel: 'Assays',
-      colLabel: 'Cell Lines',
-      outerMargins: {
+      network_data: d3Data,
+      svg_div_id: 'svg-div',
+      row_label: 'Assays',
+      col_label: 'Cell Lines',
+      outer_margins: {
         'top': 'inherit',
         'bottom': 'inherit',
         'left': 'inherit',
         'right': 'inherit'
       },
-      opacityScale: 'log',
-      inputDomain: 0.1,
-      tileColors: ['#6A9CCD', '#ED9124'],
-      titleTile: true,
-      clickTile: tileCb,
+      opacity_scale: 'log',
+      input_domain: 0.1,
+      tile_colors: ['#6A9CCD', '#ED9124'],
+      title_tile: true,
+      click_tile: tileCb,
       // 'click_group': click_group_callback
       resize: false,
       order: vm.active,
-      transpose: false
+      transpose: false,
+      zoom: false,
+      super_font_size: '24px'
     };
 
 

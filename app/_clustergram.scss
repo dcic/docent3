@@ -1,17 +1,5 @@
 @import 'base';
 
-.clustergram {
-  background-color: $color-white;
-  border-bottom: 1px solid $color-gray;
-  overflow: hidden;
-  padding: 40px 0;
-  margin-bottom: 20px;
-
-  @media all and (max-width: 580px) {
-    display: none;
-  }
-}
-
 #button-container {
   margin-left: 140px;
   text-align: left;

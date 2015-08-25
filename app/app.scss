@@ -10,6 +10,11 @@ body {
   width: 100%;
 }
 
+.wrapper {
+  min-height: 100%;
+  margin: 0 auto -120px;
+}
+
 .navbar-wrapper {
   background-color: $color-gray-light;
   border-bottom: 1px solid $color-gray;
@@ -32,28 +37,65 @@ body {
   }
 }
 
-.wrapper {
+.content {
   margin: 0 100px;
 }
 
+.clustergram {
+  background-color: $color-white;
+  border-bottom: 1px solid $color-gray;
+  overflow: hidden;
+  padding: 40px 0;
+
+  @media all and (max-width: 580px) {
+    display: none;
+  }
+}
+
 .releases {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
   max-width: 100%;
+  width: 100%;
 }
 
 .dc-release {
+  width: 100%;
+  padding: 40px 0;
+  border-top: 1px solid $color-gray-light;
+}
+
+.dc-rel-header {
+  display: flex;
+  justify-content: space-between;
 
   h4 {
+    margin: 0;
     color: $color-blue;
   }
 }
 
-.dc-rel-info {
+.status-released {
+  color: $color-green;
+}
 
+.status-awaiting {
+  color: $color-orange;
+}
+
+.dc-rel-info {
   p {
     margin: 0;
   }
+}
+
+.push {
+  height: 180px;
+}
+
+.footer {
+  height: 120px;
+  background-color: $footer-background-color;
+  border-top: 1px solid $footer-border-color;
 }
