@@ -65,7 +65,6 @@
           perturbagens: vm.query.perturbagenIds.join(',')
         }
       }).then(function(response) {
-        console.log(response);
         vm.releases = response.data;
       });
 

@@ -121,9 +121,9 @@
 
       // get height and width from parent div
       params.svg_dim = {};
-      params.svg_dim.width = Number(d3.select('#svg_div').style('width')
+      params.svg_dim.width = Number(d3.select('#svg-div').style('width')
         .replace('px', ''));
-      params.svg_dim.height = Number(d3.select('#svg_div').style(
+      params.svg_dim.height = Number(d3.select('#svg-div').style(
         'height').replace('px', ''));
 
       // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
@@ -386,7 +386,7 @@
 
       // svg_div_id
       if (typeof args.svg_div_id === 'undefined') {
-        params.svg_div_id = 'svg_div';
+        params.svg_div_id = 'svg-div';
       } else {
         params.svg_div_id = args.svg_div_id;
       }
@@ -694,12 +694,12 @@
       } else {
         // initialize matrix
         row_nodes.forEach(
-          function(tmp, i) {
-            params.matrix[i] = d3.range(col_nodes.length).map(
+          function(tmp, row_index) {
+            params.matrix[row_index] = d3.range(col_nodes.length).map(
               function(j) {
                 return {
                   pos_x: j,
-                  pos_y: i,
+                  pos_y: row_index,
                   value: 0
                 };
               });
@@ -1341,8 +1341,8 @@
             var inst_y = params.super_label_width - params.uni_margin;
             return 'translate(' + inst_x + ',' + inst_y + ')';
           })
-          .style('font-size', '14px')
-          .style('font-weight', 300);
+          .style('font-size', '20px')
+          .style('font-weight', 400);
 
         // super row title
         /////////////////////////////////////
@@ -1375,8 +1375,8 @@
           .text(params.super.row)
           .attr('text-anchor', 'center')
           .attr('transform', 'rotate(-90)')
-          .style('font-size', '14px')
-          .style('font-weight', 300);
+          .style('font-size', '20px')
+          .style('font-weight', 400);
 
       };
 
@@ -1397,45 +1397,45 @@
       // add border to svg in four separate lines - to not interfere with clicking anything
       ///////////////////////////////////////////////////////////////////////////////////////
       // left border
-      d3.select('#main_svg')
-        .append('rect')
-        .attr('fill', '#f5f5f5')
-        .attr('width', params.grey_border_width)
-        .attr('height', params.svg_dim.height)
-        .attr('transform', 'translate(0,0)');
+      // d3.select('#main_svg')
+      //   .append('rect')
+      //   .attr('fill', '#f5f5f5')
+      //   .attr('width', params.grey_border_width)
+      //   .attr('height', params.svg_dim.height)
+      //   .attr('transform', 'translate(0,0)');
 
-      // right border
-      d3.select('#main_svg')
-        .append('rect')
-        .attr('fill', '#f5f5f5')
-        .attr('width', params.grey_border_width)
-        .attr('height', params.svg_dim.height)
-        .attr('transform', function() {
-          var inst_offset = params.svg_dim.width - params.grey_border_width;
-          return 'translate(' + inst_offset + ',0)';
-        });
+      // // right border
+      // d3.select('#main_svg')
+      //   .append('rect')
+      //   .attr('fill', '#f5f5f5')
+      //   .attr('width', params.grey_border_width)
+      //   .attr('height', params.svg_dim.height)
+      //   .attr('transform', function() {
+      //     var inst_offset = params.svg_dim.width - params.grey_border_width;
+      //     return 'translate(' + inst_offset + ',0)';
+      //   });
 
-      // top border
-      d3.select('#main_svg')
-        .append('rect')
-        .attr('fill', '#f5f5f5')
-        .attr('width', params.svg_dim.width)
-        .attr('height', params.grey_border_width)
-        .attr('transform', function() {
-          var inst_offset = 0;
-          return 'translate(' + inst_offset + ',0)';
-        });
+      // // top border
+      // d3.select('#main_svg')
+      //   .append('rect')
+      //   .attr('fill', '#f5f5f5')
+      //   .attr('width', params.svg_dim.width)
+      //   .attr('height', params.grey_border_width)
+      //   .attr('transform', function() {
+      //     var inst_offset = 0;
+      //     return 'translate(' + inst_offset + ',0)';
+      //   });
 
-      // bottom border
-      d3.select('#main_svg')
-        .append('rect')
-        .attr('fill', '#f5f5f5')
-        .attr('width', params.svg_dim.width)
-        .attr('height', params.grey_border_width)
-        .attr('transform', function() {
-          var inst_offset = params.svg_dim.height - params.grey_border_width;
-          return 'translate(0,' + inst_offset + ')';
-        });
+      // // bottom border
+      // d3.select('#main_svg')
+      //   .append('rect')
+      //   .attr('fill', '#f5f5f5')
+      //   .attr('width', params.svg_dim.width)
+      //   .attr('height', params.grey_border_width)
+      //   .attr('transform', function() {
+      //     var inst_offset = params.svg_dim.height - params.grey_border_width;
+      //     return 'translate(0,' + inst_offset + ')';
+      //   });
 
       // initialize zoom and translate
       ///////////////////////////////////
@@ -1461,7 +1461,7 @@
     };
 
 
-    // parent_div: size and position svg container - svg_div
+    // parent_div: size and position svg container - svg-div
     //////////////////////////////////////////////
     function parent_div_size_pos(params) {
 
@@ -1480,7 +1480,7 @@
         container_dim.height = screen_height - outer_margins.top -
           outer_margins.bottom;
 
-        // size the svg container div - svg_div
+        // size the svg container div - svg-div
         d3.select('#' + params.svg_div_id)
           .style('margin-left', outer_margins.left + 'px')
           .style('margin-top', outer_margins.top + 'px')
@@ -1488,21 +1488,21 @@
           .style('height', container_dim.height + 'px');
       } else {
         // get outer_margins
-        var outer_margins = params.outer_margins;
+        outer_margins = params.outer_margins;
 
-        // size the svg container div - svg_div
+        // size the svg container div - svg-div
         d3.select('#' + params.svg_div_id)
           .style('margin-left', outer_margins.left + 'px')
           .style('margin-top', outer_margins.top + 'px');
-      };
+      }
 
-    };
+    }
 
     //!! this needs to be improved
     //!! I will have to generalize this
     function highlight_resource_types(params) {
 
-      var col_nodes = d3_clustergram.network_data.col_nodes;
+      // var col_nodes = d3_clustergram.network_data.col_nodes;
       var row_nodes = d3_clustergram.network_data.row_nodes;
 
       // // This will set up the resource type color key

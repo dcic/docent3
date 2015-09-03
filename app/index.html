@@ -33,9 +33,12 @@
         <p ng-if="dc.releases.length === 0">
           Click on a tile above to view the releases...
         </p>
-        <h3 class="title">
-          <span class="count">{{dc.releases.length}}</span> Releases
-          with
+        <h3 class="title" ng-if="dc.releases.length > 0">
+          <span class="emph highlight-primary">{{dc.releases.length}}</span>
+          <span ng-if="dc.releases.length === 1">Release</span>
+          <span ng-if="dc.releases.length > 1">Releases</span> with
+          <span class="emph highlight-primary">{{dc.query.dataset}}</span> and
+          <span class="emph highlight-primary">{{dc.query.cellLine}}</span>
         </h3>
         <div ng-repeat="release in dc.releases" class="dc-release">
           <div class="dc-rel-header">
@@ -48,12 +51,26 @@
             </h5>
           </div>
           <div class="dc-rel-info">
-            <p><strong>Center:</strong> {{release.group.name}}</p>
-            <p><strong>Assay:</strong> {{release.metadata.assay[0].name}}</p>
-            <p><strong>Description:</strong> {{release.description}}</p>
+            <p>
+              <strong>Center:</strong> {{release.group.name}}</p>
+            <p>
+              <strong>Assay:</strong> {{release.metadata.assay[0].name}}</p>
+            <p>
+              <strong>Description:</strong> {{release.description}}</p>
           </div>
           <div class="dc-rel-urls">
-
+            <a ng-if="release.urls.metadataUrl.length > 0" ng-href="{{release.urls.metadataUrl}}" target="_blank">
+              View Metadata
+            </a>
+            <a ng-if="release.urls.qcDocumentUrl.length > 0" ng-href="{{release.urls.qcDocumentUrl}}" target="_blank">
+              View QC Documentation
+            </a>
+            <a ng-if="release.urls.dataUrl.length > 0" ng-href="{{release.urls.dataUrl}}" target="_blank">
+              Access Data
+            </a>
+            <a ng-if="release.urls.pubMedUrl.length > 0" ng-href="{{release.urls.pubMedUrl}}" target="_blank">
+              View on PubMed
+            </a>
           </div>
         </div>
       </div>
