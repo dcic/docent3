@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "Version 3 of the Docent App for Viewing LINCS Milestones Data",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dcic/docent3.git"

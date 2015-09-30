@@ -34,7 +34,7 @@
 
       function renderClust() {
         var winWidth = angular.element(window).width();
-        vm.arguments.transpose = (winWidth < 992 && winWidth > 768);
+        vm.arguments.transpose = (winWidth < 992 && winWidth > 550);
         d3Clust.clustergram(vm.arguments);
       }
 

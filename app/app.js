@@ -12,7 +12,6 @@
 
     var vm = this;
     vm.releases = [];
-    vm.test = 'TESTING';
     vm.tileCb = tileCb;
     vm.query = {
       dataset: '',
@@ -69,8 +68,8 @@
         return pert._id;
       });
       vm.query = {
-        dataset: tileInfo.row,
-        cellLine: tileInfo.col,
+        dataset: isTransposed() ? tileInfo.col : tileInfo.row,
+        cellLine: isTransposed() ? tileInfo.row : tileInfo.col,
         perturbagens: pertIds.join(',')
       };
       search();
@@ -82,8 +81,13 @@
         method: 'GET',
         params: vm.query
       }).then(function(response) {
-        console.log(response);
-        vm.releases = response.data;
+        vm.releases = [];
+        lodash.each(response.data, function(obj) {
+          if (obj.released) {
+            obj.releaseDates.upcoming = new Date(obj.releaseDates.upcoming);
+            vm.releases.push(obj);
+          }
+        });
       });
 
     }

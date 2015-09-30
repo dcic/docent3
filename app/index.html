@@ -8,7 +8,7 @@
   <!-- <base href="/docent3/"> -->
   <link rel="stylesheet" href="bundle.min.css">
   <script src="jquery.min.js"></script>
-  <script src="angular.js"></script>
+  <script src="angular.min.js"></script>
   <script src="ng-lodash.min.js"></script>
   <script src="jquery-ui.min.js"></script>
   <script src="bundle.min.js"></script>
@@ -50,7 +50,8 @@
             cell line
           </span>
         </h3>
-        <div ng-repeat="release in dc.releases" class="dc-release">
+        <div ng-repeat="release in dc.releases | orderBy: 'releaseDates.upcoming'"
+          class="dc-release">
           <div class="dc-rel-header">
             <h4>{{release.datasetName}}</h4>
             <h5 class="dc-rel-status status-released" ng-if="release.released">

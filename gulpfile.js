@@ -88,7 +88,7 @@ gulp.task('vendor', function() {
   return gulp.src([
       BOWER_DIRECTORY + 'jquery/dist/jquery.min.js',
       BOWER_DIRECTORY + 'jquery/dist/jquery.min.map',
-      BOWER_DIRECTORY + 'angular/angular.js',
+      BOWER_DIRECTORY + 'angular/angular.min.js',
       BOWER_DIRECTORY + 'angular/angular.min.js.map',
       BOWER_DIRECTORY + 'jquery-ui/jquery-ui.min.js',
       BOWER_DIRECTORY + 'ng-lodash/build/ng-lodash.min.js'
