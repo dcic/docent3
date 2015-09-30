@@ -17,7 +17,7 @@
     vm.query = {
       dataset: '',
       cellLine: '',
-      perturbagenIds: []
+      perturbagens: []
     };
     vm.arguments = {
       network_data: d3Data,
@@ -32,39 +32,57 @@
       },
       opacity_scale: 'log',
       input_domain: 0.1,
+      do_zoom: false,
+      row_callback: rowCallback,
+      col_callback: colCallback,
       tile_colors: ['#6A9CCD', '#ED9124'],
       title_tile: true,
       click_tile: tileCb,
       // 'click_group': click_group_callback
       resize: false,
       order: vm.active,
-      transpose: false,
       zoom: false,
       super_font_size: '24px'
     };
 
+    function rowCallback(rowLabel) {
+      vm.query = isTransposed()
+        ? { cellLine: rowLabel }
+        : { dataset: rowLabel };
+      search();
+    }
+
+    function colCallback(colLabel) {
+      vm.query = isTransposed()
+        ? { dataset: colLabel }
+        : { cellLine: colLabel };
+      search();
+    }
+
+    function isTransposed() {
+      var winWidth = angular.element(window).width();
+      return (winWidth < 992 && winWidth > 768);
+    }
 
     function tileCb(tileInfo) {
+      var pertIds = lodash.map(tileInfo.perts, function(pert) {
+        return pert._id;
+      });
       vm.query = {
         dataset: tileInfo.row,
         cellLine: tileInfo.col,
-        perturbagenIds: lodash.map(tileInfo.perts, function(pert) {
-          return pert._id;
-        })
+        perturbagens: pertIds.join(',')
       };
       search();
     }
 
-    function search() {
+    function search(params) {
       $http({
         url: 'http://amp.pharm.mssm.edu/LDR/api/releases/filter',
         method: 'GET',
-        params: {
-          dataset: vm.query.dataset,
-          cellLine: vm.query.cellLine,
-          perturbagens: vm.query.perturbagenIds.join(',')
-        }
+        params: vm.query
       }).then(function(response) {
+        console.log(response);
         vm.releases = response.data;
       });
 

@@ -40,9 +40,9 @@
     fill: $color-blue;
   }
 
-  @media all and (max-width: 768px) {
+  @media all and (max-width: 992px) {
     margin: 0 auto;
     width: 550px;
-    height: 1000px;
+    height: 800px;
   }
 }

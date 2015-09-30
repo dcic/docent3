@@ -22,7 +22,7 @@
     };
 
     /* @ngInject */
-    function ClustergramController($scope, d3Clust) {
+    function ClustergramController(d3Clust) {
       var vm = this;
       vm.setOrder = setOrder;
       vm.active = 'clust';
@@ -33,14 +33,9 @@
       }
 
       function renderClust() {
-        if (angular.element(window).width() > 768) {
-          vm.arguments.transpose = false;
-          d3Clust.make_clust(vm.arguments);
-        } else if (angular.element(window).width() < 768 &&
-          angular.element(window).width() > 580) {
-          vm.arguments.transpose = true;
-          d3Clust.make_clust(vm.arguments);
-        }
+        var winWidth = angular.element(window).width();
+        vm.arguments.transpose = (winWidth < 992 && winWidth > 768);
+        d3Clust.clustergram(vm.arguments);
       }
 
 
