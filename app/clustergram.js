@@ -26,16 +26,22 @@
       var vm = this;
       vm.setOrder = setOrder;
       vm.active = 'clust';
+      var clustergram;
 
       function setOrder(orderString) {
         vm.active = orderString;
-        d3Clust.reorder(orderString);
+        if (clustergram) {
+          clustergram.reorder(orderString);
+        } else {
+          clustergram = d3Clust.clustergram(vm.arguments);
+          clustergram.reorder(orderString);
+        }
       }
 
       function renderClust() {
         var winWidth = angular.element(window).width();
         vm.arguments.transpose = (winWidth < 992 && winWidth > 550);
-        d3Clust.clustergram(vm.arguments);
+        clustergram = d3Clust.clustergram(vm.arguments);
       }
 
 

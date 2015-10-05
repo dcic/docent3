@@ -3590,7 +3590,7 @@
 
     return {
       clustergram: function(args) {
-        d3_clustergram(args);
+        return d3_clustergram(args);
       }
     };
   }
