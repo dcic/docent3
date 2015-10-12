@@ -35,6 +35,8 @@
       row_callback: rowCallback,
       col_callback: colCallback,
       tile_colors: ['#6A9CCD', '#ED9124'],
+      'tile_click_hlight': true,
+      'highlight_color': 'yellow',
       title_tile: true,
       click_tile: tileCb,
       // 'click_group': click_group_callback

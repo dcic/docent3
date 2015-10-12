@@ -92,8 +92,8 @@ node_modules/
 node_modules/*
 
 # Bower directory
-vendor/
-vendor/*
+bower_components/
+bower_components/*
 
 # Build directory
 dist/
