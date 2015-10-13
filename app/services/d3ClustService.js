@@ -18,13 +18,13 @@
     function d3_clustergram(args) {
 
       /* Utility functions
-       * ----------------------------------------------------------------------- */
+       * -------------------------------------------------------------------- */
       var Utils = {
 
         /* Returns whether or not an object has a certain property.
          */
         has: function(obj, key) {
-          return obj != null && hasOwnProperty.call(obj, key);
+          return obj !== null && hasOwnProperty.call(obj, key);
         },
 
         /* Returns true if the object is undefined.
@@ -224,7 +224,7 @@
         var rand_colors;
 
         // generate random colors
-        var tmp0 = ['#000000', '#FF34FF', '#FFFF00', '#FF4A46']
+        var tmp0 = ['#000000', '#FF34FF', '#FFFF00', '#FF4A46'];
         var tmp1 = d3.scale.category20().range().reverse();
         var tmp2 = d3.scale.category20b().range();
         var tmp3 = d3.scale.category20c().range();
@@ -247,7 +247,7 @@
           get_default_color: get_default_color,
           get_random_color: get_random_color,
           get_num_colors: get_num_colors
-        }
+        };
 
       })();
 
@@ -462,10 +462,9 @@
 
             d3.selectAll('.tile')
               .on('click', function(d) {
+                add_click_hlight(this);
 
-                add_click_hlight(this)
-
-              })
+              });
           }
 
         }
@@ -481,7 +480,7 @@
             d3.selectAll('.click_hlight')
               .remove();
 
-            if (pos_x != params.matrix.click_hlight_x || pos_y != params.matrix
+            if (pos_x !== params.matrix.click_hlight_x || pos_y !== params.matrix
               .click_hlight_y) {
 
               // save pos_x to params.viz.click_hlight_x
@@ -508,8 +507,7 @@
                 .attr('height', hlight_height)
                 .attr('fill', params.matrix.hlight_color)
                 .attr('transform', function() {
-                  return 'translate(' + params.matrix.x_scale(pos_x) +
-                    ',0)';
+                  return 'translate(' + params.matrix.x_scale(pos_x) + ',0)';
                 })
                 .attr('opacity', opacity_hlight);
 
@@ -552,8 +550,7 @@
                 .attr('class', 'click_hlight')
                 .attr('id', 'bottom_hlight')
                 .attr('width', function() {
-                  return params.matrix.x_scale.rangeBand() - 1.98 *
-                    hlight_width
+                  return params.matrix.x_scale.rangeBand() - 1.98 * hlight_width;
                 })
                 .attr('height', hlight_height)
                 .attr('fill', params.matrix.hlight_color)
@@ -573,7 +570,7 @@
             }
 
 
-          })
+          });
         }
 
         // draw grid lines after drawing tiles
@@ -627,7 +624,7 @@
             .attr('x2', params.viz.clust.dim.width)
             .style('stroke-width', params.viz.border_width / params.viz.zoom_switch +
               'px')
-            .style('stroke', 'white')
+            .style('stroke', 'white');
 
           // append vertical line groups
           clust_group
@@ -886,13 +883,12 @@
           },
           get_nodes: function(type) {
             if (type === 'row') {
-              var nodes = network_data.row_nodes;
+              return network_data.row_nodes;
             } else {
-              var nodes = network_data.col_nodes;
+              return network_data.col_nodes;
             }
-            return nodes;
           }
-        }
+        };
 
       }
 
@@ -1505,6 +1501,7 @@
               return 'translate(0,' + params.matrix.y_scale(index) + ')';
             })
             .on('click', function(d) {
+              console.log('Reordering rows');
               reorder.row_reorder.call(this);
             });
 
@@ -1687,7 +1684,7 @@
           // add row callback function
           d3.selectAll('.row_label_text')
             .on('click', function(d) {
-              if (typeof params.click_label == 'function') {
+              if (typeof params.click_label === 'function') {
                 params.click_label(d.name, 'row');
                 add_row_click_hlight(this, d.ini);
               } else {
@@ -2028,7 +2025,7 @@
 
           function add_col_click_hlight(clicked_col, id_clicked_col) {
 
-            if (id_clicked_col != params.click_hlight_col) {
+            if (id_clicked_col !== params.click_hlight_col) {
 
               params.click_hlight_col = id_clicked_col;
 

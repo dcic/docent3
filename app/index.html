@@ -42,10 +42,10 @@
             <span class="emph highlight-primary">{{dc.query.dataset}}</span>
             assay
           </span>
-          <span ng-if="dc.query.dataset.length && dc.query.cellLines.length">
+          <span ng-if="dc.query.dataset.length && dc.query.cellLine.length && dc.query.cellLine !== 'cell-free'">
             and
           </span>
-          <span ng-if="dc.query.cellLine">
+          <span ng-if="dc.query.cellLine && dc.query.cellLine !== 'cell-free'">
             <span class="emph highlight-primary">{{dc.query.cellLine}}</span>
             cell line
           </span>

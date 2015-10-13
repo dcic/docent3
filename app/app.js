@@ -32,13 +32,12 @@
       opacity_scale: 'log',
       input_domain: 0.1,
       do_zoom: false,
-      row_callback: rowCallback,
-      col_callback: colCallback,
       tile_colors: ['#6A9CCD', '#ED9124'],
-      'tile_click_hlight': true,
-      'highlight_color': 'yellow',
+      tile_click_hlight: true,
+      highlight_color: 'yellow',
       title_tile: true,
       click_tile: tileCb,
+      click_label: clickLabel,
       // 'click_group': click_group_callback
       resize: false,
       order: vm.active,
@@ -46,17 +45,10 @@
       super_font_size: '24px'
     };
 
-    function rowCallback(rowLabel) {
+    function clickLabel(label) {
       vm.query = isTransposed()
-        ? { cellLine: rowLabel }
-        : { dataset: rowLabel };
-      search();
-    }
-
-    function colCallback(colLabel) {
-      vm.query = isTransposed()
-        ? { dataset: colLabel }
-        : { cellLine: colLabel };
+        ? { dataset: label }
+        : { cellLine: label };
       search();
     }
 
