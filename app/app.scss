@@ -1,6 +1,7 @@
 @import 'normalize';
 @import 'base';
 @import 'clustergram';
+@import 'search';
 
 html,
 body {
@@ -43,7 +44,6 @@ body {
 
 .clustergram {
   background-color: $color-white;
-  border-bottom: 1px solid $color-gray;
   overflow: hidden;
   padding: 20px 0 60px;
 
@@ -54,8 +54,10 @@ body {
 
 .releases {
   align-items: center;
+  border-top: 1px solid $color-gray;
   display: flex;
   flex-direction: column;
+  margin-top: 20px;
   max-width: 100%;
   width: 100%;
 }

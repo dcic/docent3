@@ -1,5 +1,13 @@
 @import 'base';
 
+#row_container,
+#col_container {
+
+  text {
+    cursor: pointer;
+  }
+}
+
 #button-container {
   margin-left: 140px;
   text-align: left;

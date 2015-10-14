@@ -31,11 +31,19 @@
       <div class="clustergram">
         <clustergram arguments="dc.arguments"></clustergram>
       </div>
+      <div class="search">
+        <form id="release-search">
+          <input ng-model="dc.searchQ" name="searchQ" value="" type="search" id="search-bar"
+                 placeholder="search assays, cell lines, or perturbagens" tabindex="1" autocomplete="off">
+          <input type="submit" id="search-btn" ng-click="dc.search()" />
+        </form>
+      </div>
       <div class="releases">
-        <p ng-if="dc.releases.length === 0">
-          Click on a tile above to view the releases...
+        <p ng-if="dc.releases.length === 0 && !dc.resultIsSearch">
+          Click on a tile above to view its releases...
         </p>
-        <h3 class="title" ng-if="dc.releases.length > 0">
+        <h3 class="title" ng-if="dc.resultsLoading">Loading...</h3>
+        <h3 class="title" ng-if="dc.releases.length > 0 && !dc.resultIsSearch && !dc.resultsLoading">
           <span class="emph highlight-primary">{{dc.releases.length}}</span>
           Release<span ng-if="dc.releases.length > 1">s</span> with the
           <span ng-if="dc.query.dataset">
@@ -49,6 +57,14 @@
             <span class="emph highlight-primary">{{dc.query.cellLine}}</span>
             cell line
           </span>
+        </h3>
+        <h3 class="title" ng-if="dc.releases.length === 0 && dc.resultIsSearch && !dc.resultsLoading">
+          No results found for <span class="emph highlight-primary">{{dc.searchQCopy}}</span>
+        </h3>
+        <h3 class="title" ng-if="dc.releases.length > 0 && dc.resultIsSearch && !dc.resultsLoading">
+          <span class="emph highlight-primary">{{dc.releases.length}}</span>
+          Result<span ng-if="dc.releases.length > 1">s</span> Found for
+          <span class="emph highlight-primary">{{dc.searchQCopy}}</span>
         </h3>
         <div ng-repeat="release in dc.releases | orderBy: 'releaseDates.upcoming'"
           class="dc-release">
@@ -92,7 +108,7 @@
     <div class="push"></div>
   </div>
   <footer class="footer">
-    <p>Developed by the Icahn School of Medicine at Mount Sinai</p>
+    <!-- <p>Developed by the Icahn School of Medicine at Mount Sinai</p> -->
   </footer>
 </body>
 

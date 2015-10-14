@@ -16,15 +16,16 @@
   function d3Clust(d3, lodash) {
 
     function d3_clustergram(args) {
+      'use strict';
 
       /* Utility functions
-       * -------------------------------------------------------------------- */
+       * ----------------------------------------------------------------------- */
       var Utils = {
 
         /* Returns whether or not an object has a certain property.
          */
         has: function(obj, key) {
-          return obj !== null && hasOwnProperty.call(obj, key);
+          return obj != null && hasOwnProperty.call(obj, key);
         },
 
         /* Returns true if the object is undefined.
@@ -65,6 +66,7 @@
           transpose: false,
           tile_colors: ['#FF0000', '#1C86EE'],
           bar_colors: ['#FF0000', '#1C86EE'],
+          outline_colors: ['orange', 'black'],
           highlight_color: '#FFFF00',
           tile_title: false,
           // Default domain is set to 0, which means that the domain will be set automatically
@@ -224,7 +226,7 @@
         var rand_colors;
 
         // generate random colors
-        var tmp0 = ['#000000', '#FF34FF', '#FFFF00', '#FF4A46'];
+        var tmp0 = ['#000000', '#FF34FF', '#FFFF00', '#FF4A46']
         var tmp1 = d3.scale.category20().range().reverse();
         var tmp2 = d3.scale.category20b().range();
         var tmp3 = d3.scale.category20c().range();
@@ -247,7 +249,7 @@
           get_default_color: get_default_color,
           get_random_color: get_random_color,
           get_num_colors: get_num_colors
-        };
+        }
 
       })();
 
@@ -458,13 +460,13 @@
 
           // highlight clicked tile
           if (params.tile_click_hlight) {
-            console.log('highlight clicked tiles');
 
             d3.selectAll('.tile')
               .on('click', function(d) {
-                add_click_hlight(this);
 
-              });
+                add_click_hlight(this)
+
+              })
           }
 
         }
@@ -480,7 +482,7 @@
             d3.selectAll('.click_hlight')
               .remove();
 
-            if (pos_x !== params.matrix.click_hlight_x || pos_y !== params.matrix
+            if (pos_x != params.matrix.click_hlight_x || pos_y != params.matrix
               .click_hlight_y) {
 
               // save pos_x to params.viz.click_hlight_x
@@ -507,7 +509,8 @@
                 .attr('height', hlight_height)
                 .attr('fill', params.matrix.hlight_color)
                 .attr('transform', function() {
-                  return 'translate(' + params.matrix.x_scale(pos_x) + ',0)';
+                  return 'translate(' + params.matrix.x_scale(pos_x) +
+                    ',0)';
                 })
                 .attr('opacity', opacity_hlight);
 
@@ -550,7 +553,8 @@
                 .attr('class', 'click_hlight')
                 .attr('id', 'bottom_hlight')
                 .attr('width', function() {
-                  return params.matrix.x_scale.rangeBand() - 1.98 * hlight_width;
+                  return params.matrix.x_scale.rangeBand() - 1.98 *
+                    hlight_width
                 })
                 .attr('height', hlight_height)
                 .attr('fill', params.matrix.hlight_color)
@@ -570,7 +574,7 @@
             }
 
 
-          });
+          })
         }
 
         // draw grid lines after drawing tiles
@@ -583,7 +587,8 @@
               return {
                 pos_x: col_index,
                 pos_y: row_index,
-                value: 0
+                value: 0,
+                highlight: 0
               };
             });
           });
@@ -624,7 +629,7 @@
             .attr('x2', params.viz.clust.dim.width)
             .style('stroke-width', params.viz.border_width / params.viz.zoom_switch +
               'px')
-            .style('stroke', 'white');
+            .style('stroke', 'white')
 
           // append vertical line groups
           clust_group
@@ -772,31 +777,122 @@
             });
 
 
-          // // append evidence highlighting - black rects
-          if (params.matrix.highlight === 1) {
-            // console.log(row_data[0])
-            tile
-              .append('rect')
-              .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
-              .attr('height', params.matrix.y_scale.rangeBand() * 0.80)
-              .attr('class', 'highlighting_rect')
-              .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() /
-                10 +
-                ' , ' + params.matrix.y_scale.rangeBand() / 10 + ')')
-              .attr('class', 'cell_highlight')
-              .attr('stroke', 'black')
-              .attr('stroke-width', 1.0)
-              .attr('fill-opacity', 0.0)
-              .attr('stroke-opacity', function(d) {
-                // initialize opacity to 0
-                var inst_opacity = 0;
-                // set opacity to 1 if there is evidence
-                if (d.highlight === 1) {
-                  inst_opacity = 1;
-                }
-                return inst_opacity;
-              });
-          }
+          // // // append evidence highlighting - black rects
+          // if (params.matrix.highlight === 1) {
+
+          // tile
+          //   .append('rect')
+          //   .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
+          //   .attr('height', params.matrix.y_scale.rangeBand() * 0.80)
+          //   .attr('class', 'highlighting_rect')
+          //   .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 10 +
+          //   ' , ' + params.matrix.y_scale.rangeBand() / 10 + ')')
+          //   .attr('class', 'cell_highlight')
+          //   .attr('stroke', 'black')
+          //   .attr('stroke-width', 1.0)
+          //   .attr('fill-opacity', 0.0)
+          //   .attr('stroke-opacity', function(d) {
+          //     // initialize opacity to 0
+          //     var inst_opacity = 0;
+          //     // set opacity to 1 if there is evidence
+          //     if (d.highlight === 1) {
+          //     inst_opacity = 1;
+          //     }
+          //     return inst_opacity;
+          //   });
+
+
+          var rel_width_hlight = 4;
+          var highlight_opacity = 0.0;
+
+          var hlight_width = rel_width_hlight * params.viz.border_width;
+          var hlight_height = rel_width_hlight * params.viz.border_width /
+            params.viz.zoom_switch;
+
+          // top highlight
+          tile
+            .append('rect')
+            .attr('class', 'highlight')
+            .attr('id', 'top_hlight')
+            .attr('width', params.matrix.x_scale.rangeBand())
+            .attr('height', hlight_height)
+            .attr('fill', function(d) {
+              return d.highlight > 0 ? params.matrix.outline_colors[0] :
+                params.matrix.outline_colors[1];
+            })
+            .attr('opacity', function(d) {
+              return Math.abs(d.highlight);
+            });
+
+          // left highlight
+          tile
+            .append('rect')
+            .attr('class', 'highlight')
+            .attr('id', 'left_hlight')
+            .attr('width', hlight_width)
+            .attr('height', params.matrix.y_scale.rangeBand() - hlight_height *
+              0.99)
+            .attr('fill', function(d) {
+              return d.highlight > 0 ? params.matrix.outline_colors[0] :
+                params.matrix.outline_colors[1];
+            })
+            .attr('transform', function() {
+              return 'translate(' + 0 + ',' +
+                hlight_height * 0.99 + ')';
+            })
+            .attr('opacity', function(d) {
+              return Math.abs(d.highlight);
+            });
+
+          // right highlight
+          tile
+            .append('rect')
+            .attr('class', 'highlight')
+            .attr('id', 'right_hlight')
+            .attr('width', hlight_width)
+            .attr('height', params.matrix.y_scale.rangeBand() - hlight_height *
+              0.99)
+            .attr('fill', function(d) {
+              return d.highlight > 0 ? params.matrix.outline_colors[0] :
+                params.matrix.outline_colors[1];
+            })
+            .attr('transform', function() {
+              var tmp_translate = params.matrix.x_scale.rangeBand() -
+                hlight_width;
+              return 'translate(' + tmp_translate + ',' +
+                hlight_height * 0.99 + ')';
+            })
+            .attr('opacity', function(d) {
+              return Math.abs(d.highlight);
+            });
+
+          // bottom highlight
+          tile
+            .append('rect')
+            .attr('class', 'highlight')
+            .attr('id', 'bottom_hlight')
+            .attr('width', function() {
+              return params.matrix.x_scale.rangeBand() - 1.98 *
+                hlight_width
+            })
+            .attr('height', hlight_height)
+            .attr('fill', function(d) {
+              return d.highlight > 0 ? params.matrix.outline_colors[0] :
+                params.matrix.outline_colors[1];
+            })
+            .attr('transform', function() {
+              var tmp_translate_x = hlight_width * 0.99;
+              var tmp_translate_y = params.matrix.y_scale.rangeBand() -
+                hlight_height;
+              return 'translate(' + tmp_translate_x + ',' +
+                tmp_translate_y + ')';
+            })
+            .attr('opacity', function(d) {
+              return Math.abs(d.highlight);
+            });
+
+          // }
+
 
           // split-up
           tile
@@ -883,12 +979,13 @@
           },
           get_nodes: function(type) {
             if (type === 'row') {
-              return network_data.row_nodes;
+              var nodes = network_data.row_nodes;
             } else {
-              return network_data.col_nodes;
+              var nodes = network_data.col_nodes;
             }
+            return nodes;
           }
-        };
+        }
 
       }
 
@@ -988,6 +1085,7 @@
           params.matrix = {};
           params.matrix.tile_colors = config.tile_colors;
           params.matrix.bar_colors = config.bar_colors;
+          params.matrix.outline_colors = config.outline_colors;
           params.matrix.hlight_color = config.highlight_color
           params.matrix.tile_title = config.tile_title;
 
@@ -1049,6 +1147,7 @@
           // get row col data
           var col_nodes = network_data.col_nodes;
           var row_nodes = network_data.row_nodes;
+
 
           // find the label with the most characters and use it to adjust the row and col margins
           var row_max_char = lodash.max(row_nodes, function(inst) {
@@ -1156,7 +1255,7 @@
           // svg size: less than svg size
           ///////////////////////////////////
           // 0.8 approximates the trigonometric distance required for hiding the spillover
-          params.viz.spillover_x_offset = label_scale(col_max_char) * 0.6 *
+          params.viz.spillover_x_offset = label_scale(col_max_char) * 0.7 *
             params.col_label_scale;
 
 
@@ -1328,7 +1427,7 @@
           params.labels.default_fs_row = params.matrix.y_scale.rangeBand() *
             1.01;
           params.labels.default_fs_col = params.matrix.x_scale.rangeBand() *
-            0.85;
+            0.87;
 
           // initialize font size zooming parameters
           params.viz.zoom_scale_font = {};
@@ -1433,7 +1532,7 @@
           }
         }
 
-        return params
+        return params;
 
       }
 
@@ -1476,20 +1575,8 @@
             .append('g')
             .attr('id', 'row_labels');
 
-          // // d3-tooltip
-          // var tip = d3.tip()
-          //   .attr('class', 'd3-tip')
-          //   .direction('e')
-          //   .offset([0, 10])
-          //   .html(function(d) {
-          //     var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-          //     return "<span>" + inst_name + "</span>";
-          //   })
 
-          // d3.select('#' + params.viz.svg_div_id)
-          //   .select('svg')
-          //   .select('#row_container')
-          //   .call(tip);
+
 
           var row_labels = d3.select('#row_labels')
             .selectAll('g')
@@ -1500,25 +1587,42 @@
             .attr('transform', function(d, index) {
               return 'translate(0,' + params.matrix.y_scale(index) + ')';
             })
-            .on('click', function(d) {
-              console.log('Reordering rows');
+            .on('dblclick', function(d) {
               reorder.row_reorder.call(this);
-            });
+              if (params.tile_click_hlight) {
+                add_row_click_hlight(this, d.ini);
+              }
+            })
 
           if (params.labels.show_tooltips) {
-            // row_labels
-            //   .on('mouseover', function(d) {
-            //     d3.select(this)
-            //       .select('text')
-            //       .classed('active', true);
-            //     tip.show(d);
-            //   })
-            //   .on('mouseout', function mouseout(d) {
-            //     d3.select(this)
-            //       .select('text')
-            //       .classed('active', false);
-            //     tip.hide(d);
-            //   });
+            // d3-tooltip
+            var tip = d3.tip()
+              .attr('class', 'd3-tip')
+              .direction('e')
+              .offset([0, 10])
+              .html(function(d) {
+                var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+                return "<span>" + inst_name + "</span>";
+              })
+
+            d3.select('#' + params.viz.svg_div_id)
+              .select('svg')
+              .select('#row_container')
+              .call(tip);
+
+            row_labels
+              .on('mouseover', function(d) {
+                d3.select(this)
+                  .select('text')
+                  .classed('active', true);
+                tip.show(d);
+              })
+              .on('mouseout', function mouseout(d) {
+                d3.select(this)
+                  .select('text')
+                  .classed('active', false);
+                tip.hide(d);
+              });
           } else {
             row_labels
               .on('mouseover', function(d) {
@@ -1684,7 +1788,7 @@
           // add row callback function
           d3.selectAll('.row_label_text')
             .on('click', function(d) {
-              if (typeof params.click_label === 'function') {
+              if (typeof params.click_label == 'function') {
                 params.click_label(d.name, 'row');
                 add_row_click_hlight(this, d.ini);
               } else {
@@ -1693,12 +1797,12 @@
                 }
               }
 
-            });
+            })
 
 
           function add_row_click_hlight(clicked_row, id_clicked_row) {
 
-            if (id_clicked_row !== params.click_hlight_row) {
+            if (id_clicked_row != params.click_hlight_row) {
 
               var rel_width_hlight = 6;
               var opacity_hlight = 0.85;
@@ -1708,6 +1812,13 @@
 
               d3.selectAll('.click_hlight')
                 .remove();
+
+              // // highlight selected row
+              // d3.selectAll('.row_label_text')
+              //   .select('rect')
+              // d3.select(this)
+              //   .select('rect')
+              //   .style('opacity', 1);
 
               d3.select(clicked_row)
                 .append('rect')
@@ -1791,20 +1902,6 @@
           // reduce width of rotated rects
           var reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
 
-          // // d3-tooltip
-          // var tip = d3.tip()
-          //   .attr('class', 'd3-tip')
-          //   .direction('s')
-          //   .offset([20, 0])
-          //   .html(function(d) {
-          //     var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-          //     return "<span>" + inst_name + "</span>";
-          //   })
-
-          // d3.select('#' + params.viz.svg_div_id)
-          //   .select('svg')
-          //   .select('#row_container')
-          //   .call(tip);
 
           // add main column label group
           var col_label_obj = d3.select('#col_labels')
@@ -1826,9 +1923,6 @@
             // rotate column labels
             .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() /
               2 + ',' + x_offset_click + ') rotate(45)')
-            .on('click', function(d) {
-              reorder.col_reorder.call(this);
-            })
             .on('mouseover', function(d) {
               d3.select(this).select('text')
                 .classed('active', true);
@@ -1858,6 +1952,21 @@
             });
 
           if (params.labels.show_tooltips) {
+
+            // d3-tooltip
+            var tip = d3.tip()
+              .attr('class', 'd3-tip')
+              .direction('s')
+              .offset([20, 0])
+              .html(function(d) {
+                var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+                return "<span>" + inst_name + "</span>";
+              });
+            d3.select('#' + params.viz.svg_div_id)
+              .select('svg')
+              .select('#row_container')
+              .call(tip);
+
             col_label_obj
               .select('text')
               .on('mouseover', tip.show)
@@ -1871,7 +1980,7 @@
             if (tmp_width > params.bounding_width_max.col) {
               // increase the apparent width of the column label since its rotated
               // this will give more room for text
-              params.bounding_width_max.col = tmp_width * 1.2;
+              params.bounding_width_max.col = tmp_width;
             }
           });
 
@@ -2021,11 +2130,17 @@
               }
 
             })
+            .on('dblclick', function(d) {
+              reorder.col_reorder.call(this);
+              if (params.tile_click_hlight) {
+                add_col_click_hlight(this, d.ini);
+              }
+            });
 
 
           function add_col_click_hlight(clicked_col, id_clicked_col) {
 
-            if (id_clicked_col !== params.click_hlight_col) {
+            if (id_clicked_col != params.click_hlight_col) {
 
               params.click_hlight_col = id_clicked_col;
 
@@ -2038,17 +2153,29 @@
               d3.selectAll('.click_hlight')
                 .remove();
 
+              // // highlight selected column
+              // ///////////////////////////////
+              // // unhilight and unbold all columns (already unbolded earlier)
+              // d3.selectAll('.col_label_text')
+              //   .select('rect')
+              //   .style('opacity', 0);
+              // // highlight column name
+              // d3.select(clicked_col)
+              //   .select('rect')
+              //   .style('opacity', 1);
+
               d3.select(clicked_col)
                 .append('rect')
                 .attr('class', 'click_hlight')
                 .attr('id', 'col_top_hlight')
-                .attr('width', params.viz.svg_dim.height)
+                .attr('width', params.viz.clust.dim.height)
                 .attr('height', hlight_width)
                 .attr('fill', params.matrix.hlight_color)
                 .attr('opacity', opacity_hlight)
                 .attr('transform', function() {
                   var tmp_translate_y = 0;
-                  var tmp_translate_x = -params.viz.svg_dim.height;
+                  var tmp_translate_x = -(params.viz.clust.dim.height +
+                    params.class_room.col + params.viz.uni_margin);
                   return 'translate(' + tmp_translate_x + ',' +
                     tmp_translate_y + ')';
                 });
@@ -2057,7 +2184,7 @@
                 .append('rect')
                 .attr('class', 'click_hlight')
                 .attr('id', 'col_bottom_hlight')
-                .attr('width', params.viz.svg_dim.height)
+                .attr('width', params.viz.clust.dim.height)
                 .attr('height', hlight_width)
                 .attr('fill', params.matrix.hlight_color)
                 .attr('opacity', opacity_hlight)
@@ -2065,7 +2192,8 @@
                   // reverse x and y since rotated
                   var tmp_translate_y = params.matrix.x_scale.rangeBand() -
                     hlight_width;
-                  var tmp_translate_x = -params.viz.svg_dim.height;
+                  var tmp_translate_x = -(params.viz.clust.dim.height +
+                    params.class_room.col + params.viz.uni_margin);
                   return 'translate(' + tmp_translate_x + ',' +
                     tmp_translate_y + ')';
                 });
@@ -2250,10 +2378,33 @@
       }
 
       function reset_visualization_size(params) {
-        run_reset_visualization_size(params);
+
+        // get outer_margins
+        if (params.viz.expand == false) {
+          var outer_margins = params.viz.outer_margins;
+        } else {
+          var outer_margins = params.viz.outer_margins_expand;
+        }
+
+        // get the size of the window
+        var screen_width = window.innerWidth;
+        var screen_height = window.innerHeight;
+
+        // define width and height of clustergram container
+        var cont_dim = {};
+        cont_dim.width = screen_width - outer_margins.left - outer_margins.right;
+        cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
+
+        run_reset_visualization_size(cont_dim.width, cont_dim.height,
+          outer_margins.left, outer_margins.top, params);
+
       }
 
-      function run_reset_visualization_size(params) {
+
+      function run_reset_visualization_size(set_clust_width,
+        set_clust_height, set_margin_left, set_margin_top, parameters) {
+
+        var params = parameters || this.params;
 
         // reset zoom
         // zoom.two_translate_zoom(0,0,1)
@@ -2310,28 +2461,14 @@
         params.zoom.scale(zoom_y);
         params.zoom.translate([pan_dx, net_y_offset]);
 
-        // get outer_margins
-        if (params.viz.expand == false) {
-          var outer_margins = params.viz.outer_margins;
-        } else {
-          var outer_margins = params.viz.outer_margins_expand;
-        }
 
-        // get the size of the window
-        var screen_width = window.innerWidth;
-        var screen_height = window.innerHeight;
-
-        // define width and height of clustergram container
-        var cont_dim = {};
-        cont_dim.width = screen_width - outer_margins.left - outer_margins.right;
-        cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
 
         // size the svg container div - svg_div
         d3.select('#' + params.viz.svg_div_id)
-          .style('margin-left', outer_margins.left + 'px')
-          .style('margin-top', outer_margins.top + 'px')
-          .style('width', cont_dim.width + 'px')
-          .style('height', cont_dim.height + 'px');
+          .style('margin-left', set_margin_left + 'px')
+          .style('margin-top', set_margin_top + 'px')
+          .style('width', set_clust_width + 'px')
+          .style('height', set_clust_height + 'px');
 
         // get height and width from parent div
         params.viz.svg_dim = {};
@@ -2586,7 +2723,8 @@
         /////////////////////////
         d3.select('#row_top_hlight')
           .attr('width', params.viz.svg_dim.width)
-          .attr('height', hlight_height)
+          .attr('height', hlight_height);
+
         d3.select('#row_bottom_hlight')
           .attr('width', params.viz.svg_dim.width)
           .attr('height', hlight_height)
@@ -2594,6 +2732,31 @@
             var tmp_translate_y = params.matrix.y_scale.rangeBand() -
               hlight_height;
             return 'translate(0,' + tmp_translate_y + ')';
+          });
+
+        // resize col highlight
+        /////////////////////////
+        d3.select('#col_top_hlight')
+          .attr('width', params.viz.clust.dim.height)
+          .attr('height', hlight_width)
+          .attr('transform', function() {
+            var tmp_translate_y = 0;
+            var tmp_translate_x = -(params.viz.clust.dim.height +
+              params.class_room.col + params.viz.uni_margin);
+            return 'translate(' + tmp_translate_x + ',' + tmp_translate_y +
+              ')';
+          });
+
+        d3.select('#col_bottom_hlight')
+          .attr('width', params.viz.clust.dim.height)
+          .attr('height', hlight_width)
+          .attr('transform', function() {
+            var tmp_translate_y = params.matrix.x_scale.rangeBand() -
+              hlight_width;
+            var tmp_translate_x = -(params.viz.clust.dim.height +
+              params.class_room.col + params.viz.uni_margin);
+            return 'translate(' + tmp_translate_x + ',' + tmp_translate_y +
+              ')';
           });
 
         // add text to row/col during resize
@@ -3093,7 +3256,7 @@
           reorder;
 
         // make viz
-        make(config);
+        params = make(config);
 
         /* The main function; makes clustergram based on user arguments.
          */
@@ -3295,7 +3458,7 @@
             d3.select(window).on('resize', function() {
               d3.select('#main_svg').style('opacity', 0.5);
               var wait_time = 500;
-              if (params.viz.run_trans === true) {
+              if (params.viz.run_trans == true) {
                 wait_time = 2500;
               }
               setTimeout(reset_visualization_size, wait_time, params);
@@ -3364,7 +3527,7 @@
 
                 d3.select('#main_svg').style('opacity', 0.5);
                 var wait_time = 500;
-                if (params.viz.run_trans === true) {
+                if (params.viz.run_trans == true) {
                   wait_time = 2500;
                 }
                 setTimeout(reset_visualization_size, wait_time, params);
@@ -3373,6 +3536,8 @@
 
           // initialize double click zoom for matrix
           zoom.ini_doubleclick();
+
+          return params;
         }
 
 
@@ -3409,13 +3574,13 @@
               return params.matrix.opacity_scale(Math.abs(d.value));
             });
 
-        };
+        }
 
         var opacity_function = function(function_type) {
 
 
 
-        };
+        }
 
         return {
           remake: function() {
@@ -3442,8 +3607,11 @@
           reorder: reorder.all_reorder,
           search: gene_search,
           opacity_slider: opacity_slider,
-          opacity_function: opacity_function
-        };
+          opacity_function: opacity_function,
+          run_reset_visualization_size: run_reset_visualization_size,
+          params: params
+        }
+
 
       }
 
@@ -3642,13 +3810,13 @@
               params.viz.run_trans = false;
             });
 
-          // highlight selected row
-          d3.selectAll('.row_label_text')
-            .select('rect')
-            .style('opacity', 0);
-          d3.select(this)
-            .select('rect')
-            .style('opacity', 1);
+          // // highlight selected row
+          // d3.selectAll('.row_label_text')
+          //   .select('rect')
+          //   .style('opacity', 0);
+          // d3.select(this)
+          //   .select('rect')
+          //   .style('opacity', 1);
 
           reposition_tile_highlight();
 
@@ -3729,17 +3897,16 @@
               params.viz.run_trans = false;
             });
 
-          // highlight selected column
-          ///////////////////////////////
-          // unhilight and unbold all columns (already unbolded earlier)
-          d3.selectAll('.col_label_text')
-            .select('rect')
-            .style('opacity', 0);
-
-          // highlight column name
-          d3.select(this)
-            .select('rect')
-            .style('opacity', 1);
+          // // highlight selected column
+          // ///////////////////////////////
+          // // unhilight and unbold all columns (already unbolded earlier)
+          // d3.selectAll('.col_label_text')
+          //   .select('rect')
+          //   .style('opacity', 0);
+          // // highlight column name
+          // d3.select(this)
+          //   .select('rect')
+          //   .style('opacity', 1);
 
 
           reposition_tile_highlight();
@@ -3804,7 +3971,7 @@
           d3.select('#bottom_hlight')
             .attr('width', function() {
               return params.matrix.x_scale.rangeBand() - 1.98 *
-                hlight_width;
+                hlight_width
             })
             .attr('height', hlight_height)
             .transition().duration(2500)
@@ -3978,7 +4145,7 @@
                     zoom_x;
                 }
                 return inst_value;
-              });
+              })
           }
 
         }
@@ -4149,7 +4316,7 @@
                       zoom_x;
                   }
                   return inst_value;
-                });
+                })
             }
 
             if (Utils.has(params.network_data.row_nodes[0], 'value')) {
@@ -4241,13 +4408,11 @@
             });
           }
 
-          // approximating the extra space available due to rotation
-          var col_extra_space = 1.3;
 
-          if (keep_width.col > col_extra_space * params.norm_label.width.col) {
+          if (keep_width.col > params.norm_label.width.col) {
 
-            params.viz.zoom_scale_font.col = col_extra_space * params.norm_label
-              .width.col / keep_width.col;
+            params.viz.zoom_scale_font.col = params.norm_label.width.col /
+              keep_width.col;
 
             d3.selectAll('.col_label_click').each(function() {
               if (trans) {
@@ -4309,7 +4474,7 @@
               inst_zoom = params.zoom.scale();
             } else {
               // the column label has extra length since its rotated
-              max_width = params.norm_label.width.col * col_extra_space;
+              max_width = params.norm_label.width.col;
               inst_zoom = params.zoom.scale() / params.viz.zoom_switch;
             }
 
@@ -4350,7 +4515,7 @@
           zoomed: zoomed,
           two_translate_zoom: two_translate_zoom,
           ini_doubleclick: ini_doubleclick
-        };
+        }
       }
 
       /* Main program
@@ -4377,12 +4542,12 @@
         change_groups: viz.change_group,
         reorder: viz.reorder,
         opacity_slider: viz.opacity_slider,
-        opacity_function: viz.opacity_function
+        opacity_function: viz.opacity_function,
+        resize: viz.run_reset_visualization_size,
+        params: viz.params
       };
 
     }
-
-
     return {
       clustergram: function(args) {
         return d3_clustergram(args);

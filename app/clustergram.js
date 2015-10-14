@@ -22,10 +22,10 @@
     };
 
     /* @ngInject */
-    function ClustergramController(d3Clust) {
+    function ClustergramController($timeout, d3, d3Clust) {
       var vm = this;
       vm.setOrder = setOrder;
-      vm.active = 'clust';
+      vm.active = 'rank';
       var clustergram;
 
       function setOrder(orderString) {
@@ -39,11 +39,19 @@
       }
 
       function renderClust() {
+        vm.arguments.order = vm.active;
         var winWidth = angular.element(window).width();
-        vm.arguments.transpose = (winWidth < 992 && winWidth > 550);
-        clustergram = d3Clust.clustergram(vm.arguments);
-      }
+        var transpose = (winWidth < 992 && winWidth > 550);
+        if (!clustergram || vm.arguments.transpose !== transpose) {
+          vm.arguments.transpose = transpose;
+          clustergram = d3Clust.clustergram(vm.arguments);
+        } else {
+          var clustHeight = transpose === true ? 800 : 400;
+          var clustWidth = transpose === true ? 550 : winWidth - 200;
+          clustergram.resize(clustWidth, clustHeight, 0, 0);
+        }
 
+      }
 
       var runIt;
       angular.element(window).resize(function() {
@@ -51,7 +59,14 @@
         runIt = setTimeout(renderClust(), 100);
       });
 
+      function simulateClick() {
+        d3.select('.tile').each(function(d, i) {
+          d3.select(this).on('click').apply(this, [d, i]);
+        });
+      }
+
       renderClust();
+      simulateClick();
     }
   }
 }());

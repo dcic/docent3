@@ -34,6 +34,11 @@ gulp.task('clean', del.bind(
   }
 ));
 
+gulp.task('images', function() {
+  return gulp.src(SRC_DIRECTORY + '**/*.svg')
+    .pipe(gulp.dest(BUILD_DIRECTORY));
+});
+
 gulp.task('html', function() {
   return gulp.src([
       SRC_DIRECTORY + '*.html',
@@ -46,10 +51,10 @@ gulp.task('html', function() {
 gulp.task('js', function() {
   // Copy server.js and minify if production
   var serverChain = gulp.src('server.js');
-    if (argv.production) {
-      serverChain = serverChain.pipe($.uglify({ mangle: true }));
-    }
-    serverChain = serverChain.pipe(gulp.dest(BUILD_DIRECTORY));
+  if (argv.production) {
+    serverChain = serverChain.pipe($.uglify({ mangle: true }));
+  }
+  serverChain = serverChain.pipe(gulp.dest(BUILD_DIRECTORY));
   var jsChain = gulp.src([
       SRC_DIRECTORY + '**/*.js',
       '!' + BOWER_DIRECTORY + '**/*.*',
@@ -58,14 +63,14 @@ gulp.task('js', function() {
     .pipe($.sourcemaps.init())
     .pipe($.concat('bundle.min.js', { newLine: ';' }))
     .pipe(ngAnnotate({ add: true }));
-    // Only uglify if production
-    if (argv.production) {
-      jsChain = jsChain.pipe($.uglify({ mangle: true }));
-    }
-    jsChain = jsChain
-      .pipe($.sourcemaps.write())
-      .pipe(gulp.dest(BUILD_DIRECTORY));
-    return jsChain;
+  // Only uglify if production
+  if (argv.production) {
+    jsChain = jsChain.pipe($.uglify({ mangle: true }));
+  }
+  jsChain = jsChain
+    .pipe($.sourcemaps.write())
+    .pipe(gulp.dest(BUILD_DIRECTORY));
+  return jsChain;
 });
 
 gulp.task('scss', function() {
@@ -97,7 +102,7 @@ gulp.task('vendor', function() {
 });
 
 gulp.task('build', ['clean'], function(callback) {
-  runSequence(['vendor', 'html', 'scss', 'js'], callback);
+  runSequence(['vendor', 'scss'], 'images', 'html', 'js', callback);
 });
 
 // Launch BrowserSync server
